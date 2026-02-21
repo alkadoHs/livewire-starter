@@ -41,11 +41,6 @@
                     }
                 };
                 window.addEventListener('resize', update);
-
-                {{-- Close sidebar on Livewire navigation --}}
-                document.addEventListener('livewire:navigating', () => {
-                    this.closeMobile();
-                });
             },
 
             get bodyScrollLocked() {
@@ -88,7 +83,6 @@
                 'transition-transform duration-300 ease-out': isMobile,
             }"
             x-cloak
-            x-on:click="if (isMobile && $event.target.closest('a')) closeMobile()"
         >
             <x-slot:brand>
                 <div class="flex items-center gap-2 px-2 py-3" data-slot="brand-name">
