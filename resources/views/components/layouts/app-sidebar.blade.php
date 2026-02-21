@@ -109,16 +109,19 @@
                     icon="home"
                     label="Dashboard"
                     :href="route('dashboard')"
+                    wire:navigate
                 />
                 <x-ui.navlist.item
                     icon="banknotes"
                     label="Transactions"
                     :href="route('transactions')"
+                    wire:navigate
                 />
                 <x-ui.navlist.item
                     icon="cog-6-tooth"
                     label="Account"
                     :href="route('settings.account')"
+                    wire:navigate
                 />
             </x-ui.navlist>
 
