@@ -24,17 +24,35 @@
             },
 
             closeMobile() {
-                this.mobileOpen = false;
+                if (this.mobileOpen) {
+                    this.mobileOpen = false;
+                }
             },
 
             init() {
                 const update = () => {
+                    const wasMobile = this.isMobile;
                     this.isMobile = window.innerWidth < 768;
-                    if (this.isMobile) this.isCollapsed = false;
+                    if (this.isMobile) {
+                        this.isCollapsed = false;
+                    }
+                    if (wasMobile && !this.isMobile) {
+                        this.mobileOpen = false;
+                    }
                 };
                 window.addEventListener('resize', update);
+
+                {{-- Close sidebar on Livewire navigation --}}
+                document.addEventListener('livewire:navigating', () => {
+                    this.closeMobile();
+                });
+            },
+
+            get bodyScrollLocked() {
+                return this.isMobile && this.mobileOpen;
             }
         }"
+        x-effect="document.body.style.overflow = bodyScrollLocked ? 'hidden' : ''"
         :class="{
             'md:grid-cols-[4rem_1fr]': isCollapsed,
             'md:grid-cols-[16rem_1fr]': !isCollapsed && !isMobile,
@@ -51,7 +69,7 @@
             x-transition:leave="transition-opacity ease-in duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+            class="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
             x-on:click="closeMobile()"
             x-cloak
         ></div>
@@ -59,17 +77,18 @@
         {{-- Sidebar --}}
         <x-ui.sidebar
             :collapsable="true"
-            class="sticky top-0 h-screen"
             x-bind:data-collapsed="isCollapsed ? '' : undefined"
             x-bind:class="{
+                'sticky top-0 h-screen': !isMobile,
                 'w-16': isCollapsed && !isMobile,
                 'w-64': !isCollapsed && !isMobile,
-                'fixed inset-y-0 left-0 w-64': isMobile,
+                'fixed inset-y-0 left-0 z-[101] w-64 shadow-2xl': isMobile,
                 'translate-x-0': isMobile && mobileOpen,
                 '-translate-x-full': isMobile && !mobileOpen,
-                'transition-transform duration-300': isMobile,
+                'transition-transform duration-300 ease-out': isMobile,
             }"
             x-cloak
+            x-on:click="if (isMobile && $event.target.closest('a')) closeMobile()"
         >
             <x-slot:brand>
                 <div class="flex items-center gap-2 px-2 py-3" data-slot="brand-name">
@@ -90,6 +109,11 @@
                     icon="home"
                     label="Dashboard"
                     :href="route('dashboard')"
+                />
+                <x-ui.navlist.item
+                    icon="banknotes"
+                    label="Transactions"
+                    :href="route('transactions')"
                 />
                 <x-ui.navlist.item
                     icon="cog-6-tooth"

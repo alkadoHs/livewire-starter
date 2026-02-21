@@ -43,7 +43,7 @@
     $classes = [
         'isolate',
         '[grid-area:sidebar]',
-        'z-40 dark:bg-neutral-950 bg-white lg:block',
+        'z-40 dark:bg-neutral-950 bg-white',
         'border-r dark:border-white/5 border-black/5',
         'transition-[width] duration-500',
         'overflow-x-visible',
@@ -62,7 +62,6 @@
 <div
     {{ $attributes->class($classes) }}
     data-slot="sidebar"
-    style="z-index:99;"
     @if ($collapsable)
         x-data="{
             collapsable: @js($collapsable)

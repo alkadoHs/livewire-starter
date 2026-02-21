@@ -10,6 +10,7 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Auth\VerifyEmail;
 use App\Livewire\Dashboard;
 use App\Livewire\Settings\Account;
+use App\Livewire\Transactions;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,7 @@ Route::livewire('reset-password/{token}', ResetPassword::class)->name('password.
 
 Route::middleware('auth')->group(function () {
     Route::livewire('/dashboard', Dashboard::class)->name('dashboard');
+    Route::livewire('/transactions', Transactions::class)->name('transactions');
     Route::livewire('/settings/account', Account::class)->name('settings.account');
 });
 
